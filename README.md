@@ -9,7 +9,7 @@ iOS is in internal testing ahead of a TestFlight beta.
 
 ## Download (Android 8.0+)
 
-**[Download the latest APK](https://github.com/RapidInfosoft/shre-keyboard-releases/releases/latest)**
+**[Download the latest APK](https://github.com/RapidInfosoft/shre-keyboard-releases/releases/download/latest/shre-keyboard-latest.apk)**
 
 This repository's Releases page is the **only official source** for the APK.
 
