@@ -1,84 +1,769 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Shrey Keyboard — Install</title>
-<meta name="description" content="Download and install the Shrey Keyboard — an AI voice + typing keyboard for Android." />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shre Keyboard — the AI voice keyboard for Android</title>
+<meta name="description" content="Shre Keyboard turns speech into clean, punctuated text in 50+ languages — on-device recognition first, AI cleanup on top, and no collection of what you type. Android 8.0+, iOS in preparation.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f8f9">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c1219">
+<link rel="canonical" href="https://rapidinfosoft.github.io/shre-keyboard-releases/">
+<meta property="og:title" content="Shre Keyboard — a keyboard you can talk to">
+<meta property="og:description" content="Speech to clean text in 50+ languages. On-device first, AI cleanup on top, no keystroke collection. Free APK for Android 8.0+.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rapidinfosoft.github.io/shre-keyboard-releases/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='14' fill='%230e6a5e'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='32' font-weight='700' fill='%23eafffa' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<script>
+  // Runs before paint: theme + JS flag, no flash.
+  (function () {
+    var d = document.documentElement;
+    d.classList.add('js');
+    try {
+      var t = localStorage.getItem('shre-theme');
+      if (t === 'light' || t === 'dark') d.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 <style>
-  :root { --bg:#1a1a2e; --bg2:#16213e; --card:#0f1830; --accent:#e94560; --accent2:#4caf50; --text:#f4f4f8; --muted:#9aa3c0; }
-  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html,body { margin:0; padding:0; }
-  body { background:linear-gradient(160deg,#1a1a2e 0%,#16213e 60%,#0f1830 100%); color:var(--text);
-         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif; min-height:100vh;
-         padding:env(safe-area-inset-top) 20px calc(40px + env(safe-area-inset-bottom)); line-height:1.5; }
-  .wrap { max-width:520px; margin:0 auto; }
-  .logo { text-align:center; margin:38px 0 8px; }
-  .logo .mark { font-size:56px; }
-  h1 { text-align:center; font-size:26px; margin:6px 0 2px; letter-spacing:.2px; }
-  .tag { text-align:center; color:var(--muted); margin:0 0 26px; font-size:15px; }
-  .dl { display:block; text-decoration:none; text-align:center; background:var(--accent); color:#fff;
-        font-size:20px; font-weight:700; padding:18px 20px; border-radius:16px; margin:0 0 10px;
-        box-shadow:0 8px 24px rgba(233,69,96,.35); transition:transform .08s ease; }
-  .dl:active { transform:scale(.98); }
-  .dl small { display:block; font-weight:500; font-size:13px; opacity:.9; margin-top:4px; }
-  .meta { text-align:center; color:var(--muted); font-size:12.5px; margin:0 0 30px; }
-  .card { background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:20px 20px 8px; margin:0 0 18px; }
-  .card h2 { font-size:15px; text-transform:uppercase; letter-spacing:1px; color:var(--accent); margin:0 0 14px; }
-  ol { margin:0; padding-left:22px; }
-  ol li { margin:0 0 14px; }
-  ol li b { color:#fff; }
-  .path { background:var(--bg2); border-radius:8px; padding:2px 7px; font-size:13.5px; color:#cdd6f4;
-          font-family:ui-monospace,SFMono-Regular,Menlo,monospace; white-space:nowrap; }
-  .note { color:var(--muted); font-size:13px; }
-  .modes { display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 14px; }
-  .chip { background:var(--bg2); border-radius:999px; padding:6px 12px; font-size:13px; color:#dfe4ff; }
-  footer { text-align:center; color:var(--muted); font-size:12px; margin-top:26px; }
-  a.inline { color:#8ab4ff; }
+  /* ---------- Font ---------- */
+  @font-face {
+    font-family: 'Bricolage Grotesque';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('fonts/bricolage-grotesque-latin.woff2') format('woff2');
+  }
+
+  /* ---------- Tokens ---------- */
+  :root {
+    --bg: hsl(192 32% 96%);
+    --surface: hsl(190 45% 99%);
+    --surface-2: hsl(192 30% 92%);
+    --ink: hsl(212 45% 11%);
+    --ink-2: hsl(212 16% 36%);
+    --line: hsl(200 22% 85%);
+    --action: hsl(174 75% 24%);
+    --action-hover: hsl(174 80% 19%);
+    --action-ink: hsl(180 40% 98%);
+    --accent: hsl(186 85% 33%);
+    --ring: hsl(174 75% 30% / .38);
+    --shadow-1: 0 1px 2px hsl(210 40% 15% / .06), 0 4px 14px hsl(210 40% 15% / .07);
+    --shadow-2: 0 2px 6px hsl(210 45% 12% / .08), 0 18px 48px hsl(210 45% 12% / .14);
+    /* inverted band scope (same in both themes) */
+    --band-bg: hsl(211 42% 9%);
+    --band-surface: hsl(210 34% 13%);
+    --band-ink: hsl(190 35% 94%);
+    --band-ink-2: hsl(202 16% 66%);
+    --band-line: hsl(207 26% 22%);
+    --band-accent: hsl(172 70% 52%);
+    --display: 'Bricolage Grotesque', 'Avenir Next', Seravek, Georgia, serif;
+    --body: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --r-s: 10px; --r-m: 16px; --r-l: 24px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: hsl(211 38% 7%);
+      --surface: hsl(210 32% 10%);
+      --surface-2: hsl(209 27% 14%);
+      --ink: hsl(190 32% 92%);
+      --ink-2: hsl(203 15% 64%);
+      --line: hsl(208 24% 19%);
+      --action: hsl(170 68% 45%);
+      --action-hover: hsl(170 75% 55%);
+      --action-ink: hsl(211 45% 8%);
+      --accent: hsl(186 85% 55%);
+      --ring: hsl(170 70% 50% / .45);
+      --shadow-1: 0 1px 2px hsl(210 60% 3% / .5), 0 4px 14px hsl(210 60% 3% / .45);
+      --shadow-2: 0 2px 6px hsl(210 60% 3% / .55), 0 18px 48px hsl(210 60% 3% / .6);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: hsl(192 32% 96%); --surface: hsl(190 45% 99%); --surface-2: hsl(192 30% 92%);
+    --ink: hsl(212 45% 11%); --ink-2: hsl(212 16% 36%); --line: hsl(200 22% 85%);
+    --action: hsl(174 75% 24%); --action-hover: hsl(174 80% 19%); --action-ink: hsl(180 40% 98%);
+    --accent: hsl(186 85% 33%); --ring: hsl(174 75% 30% / .38);
+    --shadow-1: 0 1px 2px hsl(210 40% 15% / .06), 0 4px 14px hsl(210 40% 15% / .07);
+    --shadow-2: 0 2px 6px hsl(210 45% 12% / .08), 0 18px 48px hsl(210 45% 12% / .14);
+  }
+  :root[data-theme="dark"] {
+    --bg: hsl(211 38% 7%); --surface: hsl(210 32% 10%); --surface-2: hsl(209 27% 14%);
+    --ink: hsl(190 32% 92%); --ink-2: hsl(203 15% 64%); --line: hsl(208 24% 19%);
+    --action: hsl(170 68% 45%); --action-hover: hsl(170 75% 55%); --action-ink: hsl(211 45% 8%);
+    --accent: hsl(186 85% 55%); --ring: hsl(170 70% 50% / .45);
+    --shadow-1: 0 1px 2px hsl(210 60% 3% / .5), 0 4px 14px hsl(210 60% 3% / .45);
+    --shadow-2: 0 2px 6px hsl(210 60% 3% / .55), 0 18px 48px hsl(210 60% 3% / .6);
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+  ::selection { background: var(--action); color: var(--action-ink); }
+  img, svg { max-width: 100%; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--action-hover); }
+  :focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); border-radius: 6px; }
+
+  h1, h2, h3 { font-family: var(--display); font-weight: 640; line-height: 1.08; letter-spacing: -0.025em; margin: 0; text-wrap: balance; }
+  p { margin: 0; }
+  .measure { max-width: 62ch; }
+
+  .wrap { width: min(100% - 2.5rem, 68rem); margin-inline: auto; }
+  section { padding-block: clamp(4rem, 9vw, 7.5rem); scroll-margin-top: 5rem; }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .skip-link { position: absolute; left: 1rem; top: -3rem; z-index: 100; background: var(--action); color: var(--action-ink); padding: .6rem 1rem; border-radius: var(--r-s); transition: top .15s ease-out; }
+  .skip-link:focus { top: 1rem; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+    min-height: 48px; padding: .8rem 1.5rem;
+    border-radius: 999px; border: 1px solid transparent;
+    font: 600 1.0625rem/1.2 var(--body);
+    text-decoration: none; cursor: pointer;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+    transition: transform .12s ease-out, background-color .15s ease-out, border-color .15s ease-out, box-shadow .15s ease-out;
+  }
+  .btn:active { transform: scale(.97); }
+  .btn-primary { background: var(--action); color: var(--action-ink); box-shadow: var(--shadow-1); }
+  .btn-primary:hover { color: var(--action-ink); }
+  @media (hover: hover) {
+    .btn-primary:hover { background: var(--action-hover); box-shadow: var(--shadow-2); }
+    .btn-ghost:hover { border-color: var(--ink-2); }
+  }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+
+  /* ---------- Header ---------- */
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in hsl, var(--bg) 78%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s ease-out;
+  }
+  .site-header.scrolled { border-bottom-color: var(--line); }
+  .nav { display: flex; align-items: center; gap: 1rem; min-height: 64px; }
+  .brand { display: inline-flex; align-items: center; gap: .6rem; font-family: var(--display); font-weight: 680; font-size: 1.14rem; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+  .brand-mark {
+    display: grid; place-items: center; width: 34px; height: 34px; flex: none;
+    border-radius: 10px; background: var(--action); color: var(--action-ink);
+    font-family: var(--display); font-weight: 700; font-size: 1.05rem;
+    box-shadow: inset 0 -2px 0 hsl(0 0% 0% / .18);
+  }
+  .nav-links { display: none; gap: 1.4rem; margin-inline: auto; }
+  .nav-links a { color: var(--ink-2); text-decoration: none; font-size: .95rem; font-weight: 500; padding: .35rem .1rem; }
+  @media (hover: hover) { .nav-links a:hover { color: var(--ink); } }
+  .nav-cta { margin-left: auto; display: inline-flex; align-items: center; gap: .5rem; }
+  .nav-cta .btn { display: none; min-height: 44px; padding: .55rem 1.1rem; font-size: .95rem; }
+  @media (min-width: 440px) { .nav-cta .btn { display: inline-flex; } }
+  @media (min-width: 760px) {
+    .nav-links { display: flex; }
+    .nav-cta { margin-left: 0; }
+  }
+  .theme-toggle {
+    display: grid; place-items: center; width: 44px; height: 44px;
+    border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink-2);
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  @media (hover: hover) { .theme-toggle:hover { color: var(--ink); border-color: var(--ink-2); } }
+  .theme-toggle .moon { display: none; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) .theme-toggle .sun { display: none; }
+    :root:not([data-theme]) .theme-toggle .moon { display: block; }
+  }
+  :root[data-theme="dark"] .theme-toggle .sun { display: none; }
+  :root[data-theme="dark"] .theme-toggle .moon { display: block; }
+  :root[data-theme="light"] .theme-toggle .sun { display: block; }
+  :root[data-theme="light"] .theme-toggle .moon { display: none; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding-block: clamp(2.2rem, 6vw, 6rem) clamp(3.5rem, 8vw, 6.5rem); }
+  .hero-grid { display: grid; gap: 2.8rem; align-items: center; }
+  @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.04fr .96fr; gap: 3.5rem; } }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .82rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.1rem;
+  }
+  .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--accent); border-radius: 2px; }
+  .hero h1 { font-size: clamp(2.45rem, 6.4vw, 4.4rem); font-weight: 700; letter-spacing: -0.035em; }
+  .hero .lede { margin-top: 1.15rem; font-size: clamp(1.06rem, 1.4vw, 1.22rem); color: var(--ink-2); max-width: 34em; }
+  .hero-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin-top: 1.7rem; }
+  .ios-pill {
+    display: inline-flex; align-items: center; gap: .5rem;
+    min-height: 44px; padding: .55rem 1.05rem; border-radius: 999px;
+    border: 1px dashed var(--line); color: var(--ink-2); font-size: .92rem; font-weight: 500;
+  }
+  .ios-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex: none; }
+  .hero-meta { margin-top: 1.05rem; font-size: .9rem; color: var(--ink-2); }
+  .hero-meta a { color: inherit; }
+
+  /* ---------- Stylized keyboard visual ---------- */
+  .kb-stage { position: relative; }
+  .kb {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-l);
+    padding: clamp(.9rem, 2.4vw, 1.35rem);
+    box-shadow: var(--shadow-2);
+  }
+  @media (min-width: 900px) { .kb { transform: rotate(-1.6deg); } }
+  .kb-toolbar { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; }
+  .kb-chip {
+    display: inline-flex; align-items: center; gap: .35rem;
+    padding: .32rem .7rem; border-radius: 999px;
+    background: var(--surface-2); color: var(--ink-2);
+    font-size: .8rem; font-weight: 600;
+  }
+  .kb-chip.active { background: var(--action); color: var(--action-ink); }
+  .kb-chip svg { width: 14px; height: 14px; }
+  .kb-badge { margin-left: auto; font-size: .74rem; font-weight: 600; letter-spacing: .04em; color: var(--accent); text-transform: uppercase; }
+  .kb-transcript { margin-top: 1rem; display: grid; gap: .55rem; }
+  .kb-raw { font-size: .92rem; color: var(--ink-2); font-style: italic; }
+  .kb-clean {
+    font-size: clamp(.98rem, 1.5vw, 1.08rem); font-weight: 550; color: var(--ink);
+    background: var(--surface-2); border-left: 3px solid var(--action);
+    padding: .65rem .85rem; border-radius: 0 var(--r-s) var(--r-s) 0;
+  }
+  .kb-wave { display: flex; align-items: center; gap: 3px; height: 34px; margin-top: 1rem; }
+  .kb-wave span {
+    flex: 1; min-width: 2px; border-radius: 3px;
+    background: linear-gradient(180deg, var(--accent), var(--action));
+    height: calc(12% + var(--h) * 0.82%);
+    transform-origin: center;
+  }
+  .js .kb-wave.playing span { animation: wave 1.15s ease-in-out calc(var(--i) * -.09s) infinite alternate; }
+  @keyframes wave { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
+  .kb-keys { display: grid; gap: 6px; margin-top: 1.1rem; }
+  .kb-row { display: flex; gap: 6px; }
+  .kb-key { height: clamp(26px, 5.5vw, 34px); flex: 1; border-radius: 7px; background: var(--surface-2); box-shadow: inset 0 -2px 0 hsl(210 40% 20% / .08); }
+  .kb-key.wide { flex: 2.2; }
+  .kb-key.space { flex: 5; }
+  .kb-key.mic { background: var(--action); flex: 1.35; display: grid; place-items: center; color: var(--action-ink); }
+  .kb-key.mic svg { width: 15px; height: 15px; }
+  .kb-caption { margin-top: .8rem; font-size: .78rem; color: var(--ink-2); text-align: center; }
+
+  /* ---------- Section headers ---------- */
+  .sec-head h2 { font-size: clamp(1.75rem, 3.6vw, 2.7rem); }
+  .sec-head .sub { margin-top: .9rem; color: var(--ink-2); font-size: clamp(1rem, 1.3vw, 1.13rem); max-width: 58ch; }
+
+  /* ---------- Privacy ---------- */
+  .privacy-grid { display: grid; gap: 2.6rem; margin-top: 2.6rem; }
+  @media (min-width: 900px) { .privacy-grid { grid-template-columns: 1fr 1fr; column-gap: 4rem; } }
+  .fact-list { display: grid; gap: 1.1rem; margin: 0; padding: 0; list-style: none; }
+  .fact { display: flex; gap: .9rem; align-items: flex-start; }
+  .fact svg { width: 22px; height: 22px; flex: none; color: var(--action); margin-top: .18rem; }
+  .fact b { display: block; font-weight: 650; }
+  .fact span { color: var(--ink-2); font-size: .97rem; }
+  .policy-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-m);
+    padding: 1.4rem 1.5rem; box-shadow: var(--shadow-1);
+    align-self: start;
+  }
+  .policy-card p { color: var(--ink-2); font-size: .97rem; margin-top: .5rem; }
+  .policy-card .btn { margin-top: 1.1rem; }
+  .policy-card h3 { font-size: 1.2rem; }
+
+  /* ---------- Features ---------- */
+  .feat-grid { display: grid; gap: 1rem; margin-top: 2.6rem; }
+  @media (min-width: 700px) { .feat-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 980px) { .feat-grid { grid-template-columns: repeat(3, 1fr); } }
+  .feat {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-m);
+    padding: 1.35rem 1.4rem 1.5rem;
+    transition: transform .18s ease-out, box-shadow .18s ease-out, border-color .18s ease-out;
+  }
+  @media (hover: hover) { .feat:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--ink-2); } }
+  .feat.featured { grid-column: 1 / -1; display: grid; gap: 1.2rem; align-items: center; background: linear-gradient(135deg, var(--surface), var(--surface-2)); }
+  @media (min-width: 700px) { .feat.featured { grid-template-columns: 1.2fr .8fr; padding: 1.9rem 2rem; } }
+  .feat svg.icon { width: 26px; height: 26px; color: var(--action); }
+  .feat h3 { font-size: 1.17rem; margin-top: .8rem; }
+  .feat.featured h3 { font-size: clamp(1.35rem, 2.3vw, 1.7rem); }
+  .feat p { margin-top: .5rem; color: var(--ink-2); font-size: .97rem; }
+  .lang-cloud { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .lang-cloud span { padding: .3rem .7rem; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); font-size: .82rem; color: var(--ink-2); font-weight: 550; }
+
+  /* ---------- Voice engine band (inverted) ---------- */
+  .band { background: var(--band-bg); color: var(--band-ink); }
+  .band .sec-head h2 { color: var(--band-ink); }
+  .band .sec-head .sub { color: var(--band-ink-2); }
+  .band ::selection { background: var(--band-accent); color: var(--band-bg); }
+  .tiers { display: grid; gap: 1rem; margin-top: 3rem; counter-reset: tier; }
+  @media (min-width: 860px) {
+    .tiers { grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+    .tier:nth-child(2) { margin-top: 1.6rem; }
+    .tier:nth-child(3) { margin-top: 3.2rem; }
+  }
+  .tier {
+    position: relative;
+    background: var(--band-surface); border: 1px solid var(--band-line); border-radius: var(--r-m);
+    padding: 1.5rem 1.5rem 1.6rem;
+  }
+  .tier::before {
+    counter-increment: tier; content: "Tier " counter(tier);
+    display: inline-block; font-size: .74rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--band-accent); border: 1px solid var(--band-line); border-radius: 999px; padding: .28rem .7rem;
+  }
+  .tier h3 { font-size: 1.28rem; margin-top: .95rem; }
+  .tier .lat { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 4vw, 2.7rem); letter-spacing: -0.03em; margin-top: .7rem; color: var(--band-accent); font-variant-numeric: tabular-nums; }
+  .tier .lat small { font-size: .95rem; font-weight: 500; color: var(--band-ink-2); letter-spacing: 0; margin-left: .25rem; }
+  .tier p { margin-top: .55rem; color: var(--band-ink-2); font-size: .96rem; }
+  .tier ul { margin: .9rem 0 0; padding: 0; list-style: none; display: grid; gap: .35rem; font-size: .9rem; color: var(--band-ink-2); }
+  .tier li::before { content: "— "; color: var(--band-accent); }
+  .band-note { margin-top: 2.2rem; color: var(--band-ink-2); font-size: .95rem; max-width: 60ch; }
+  .band-note b { color: var(--band-ink); }
+
+  /* ---------- Install ---------- */
+  .steps { margin: 2.6rem 0 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 1.6rem; }
+  .step { display: grid; grid-template-columns: 44px 1fr; gap: 1rem; align-items: start; }
+  .step::before {
+    counter-increment: step; content: counter(step);
+    display: grid; place-items: center; width: 44px; height: 44px;
+    border-radius: 50%; background: var(--surface); border: 1px solid var(--line);
+    font-family: var(--display); font-weight: 700; font-size: 1.15rem; color: var(--action);
+  }
+  .step h3 { font-size: 1.22rem; padding-top: .45rem; }
+  .step p { margin-top: .45rem; color: var(--ink-2); }
+  .step .btn { margin-top: .9rem; }
+  .device-cards { display: grid; gap: .9rem; margin-top: 1rem; }
+  @media (min-width: 760px) { .device-cards { grid-template-columns: 1fr 1fr; } }
+  .device-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-m); padding: 1.1rem 1.2rem; }
+  .device-card h4 { margin: 0; font-size: .98rem; font-weight: 650; }
+  .crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .2rem; margin-top: .7rem; }
+  .crumbs span { background: var(--surface-2); border-radius: 7px; padding: .28rem .55rem; font-size: .85rem; color: var(--ink); }
+  .crumbs i { font-style: normal; color: var(--ink-2); font-size: .8rem; }
+  .device-card p { margin-top: .7rem; font-size: .9rem; color: var(--ink-2); }
+  .ios-card {
+    margin-top: 3rem; display: grid; gap: .4rem;
+    background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r-m);
+    padding: 1.5rem 1.6rem;
+  }
+  .ios-card h3 { font-size: 1.2rem; display: flex; align-items: center; gap: .6rem; }
+  .ios-card h3 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .ios-card p { color: var(--ink-2); font-size: .97rem; }
+
+  /* ---------- FAQ ---------- */
+  .faq { max-width: 46rem; margin-top: 2.2rem; }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1.05rem .2rem; cursor: pointer; list-style: none;
+    font-weight: 600; font-size: 1.03rem;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-family: var(--display); font-size: 1.3rem; color: var(--action); flex: none; transition: transform .18s ease-out; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq .a { padding: 0 .2rem 1.2rem; color: var(--ink-2); max-width: 60ch; }
+
+  /* ---------- Final CTA + footer ---------- */
+  .fin { text-align: center; }
+  .fin h2 { font-size: clamp(1.9rem, 4.4vw, 3rem); }
+  .fin .hero-ctas { justify-content: center; margin-top: 1.6rem; }
+  .fin .hero-meta { margin-top: 1rem; }
+  .site-footer { border-top: 1px solid var(--line); padding: 2.2rem 0 3rem; font-size: .92rem; color: var(--ink-2); }
+  .foot-row { display: flex; flex-wrap: wrap; gap: 1rem 1.8rem; align-items: center; }
+  .foot-row .brand { font-size: 1rem; }
+  .foot-row .brand-mark { width: 28px; height: 28px; font-size: .9rem; border-radius: 8px; }
+  .foot-links { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-left: auto; }
+  .foot-links a { color: var(--ink-2); text-decoration: none; }
+  @media (hover: hover) { .foot-links a:hover { color: var(--ink); text-decoration: underline; } }
+  .foot-legal { margin-top: 1.4rem; font-size: .85rem; }
+
+  /* ---------- Reveal choreography ---------- */
+  .js .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease-out, transform .6s ease-out; }
+  .js .reveal.in { opacity: 1; transform: none; }
+  .js .hero .reveal { transition-duration: .7s; }
+  .js .hero .r1 { transition-delay: 0s; }
+  .js .hero .r2 { transition-delay: .09s; }
+  .js .hero .r3 { transition-delay: .18s; }
+  .js .hero .r4 { transition-delay: .27s; }
+  .js .hero .r5 { transition-delay: .2s; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .js .reveal { transform: none; transition: opacity .3s ease-out; }
+    .js .kb-wave.playing span { animation: none; }
+    .btn, .feat, .theme-toggle { transition: none; }
+    .btn:active { transform: none; }
+  }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="logo"><span class="mark">⌨️</span></div>
-    <h1>Shrey Keyboard</h1>
-    <p class="tag">AI voice&nbsp;+ typing keyboard for Android</p>
+<a class="skip-link" href="#main">Skip to content</a>
 
-    <a class="dl" href="https://github.com/RapidInfosoft/shre-keyboard-releases/releases/download/latest/shre-keyboard-latest.apk">
-      ⬇️ Download APK
-      <small>tap here on your Android phone</small>
+<header class="site-header" id="top">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Shre Keyboard — back to top">
+      <span class="brand-mark" aria-hidden="true">S</span>
+      Shre&nbsp;Keyboard
     </a>
-    <p class="meta">Android 8.0+ • ~2&nbsp;MB • installs from outside the Play Store</p>
-
-    <div class="modes">
-      <span class="chip">🎤 Dictation</span>
-      <span class="chip">✍️ Smart Compose</span>
-      <span class="chip">💬 Ask Shrey</span>
-      <span class="chip">📝 Notes</span>
-      <span class="chip">🌐 Multilingual</span>
-      <span class="chip">Aa Tone</span>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#privacy">Privacy</a>
+      <a href="#features">Features</a>
+      <a href="#voice">Voice engine</a>
+      <a href="#install">Install</a>
+    </nav>
+    <div class="nav-cta">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light and dark theme">
+        <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.4"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M18.7 5.3 17 7M7 17l-1.7 1.7"/></svg>
+        <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z"/></svg>
+      </button>
+      <a class="btn btn-primary" href="https://github.com/RapidInfosoft/shre-keyboard-releases/releases/latest">Get the APK</a>
     </div>
-
-    <div class="card">
-      <h2>Install</h2>
-      <ol>
-        <li>Tap <b>Download APK</b> above (in Chrome on your phone).</li>
-        <li>When prompted, allow your browser to <b>install unknown apps</b>, then tap <b>Install</b>.</li>
-        <li>Open the app once — it shows the setup screen.</li>
-      </ol>
-    </div>
-
-    <div class="card">
-      <h2>Enable the keyboard</h2>
-      <ol>
-        <li>Go to <span class="path">Settings ▸ System ▸ Languages &amp; input ▸ On-screen keyboard ▸ Manage keyboards</span>.</li>
-        <li>Turn on <b>Shrey Keyboard</b>.</li>
-        <li>In any app, tap a text field, then tap the <b>🌐 / keyboard</b> icon to switch to Shrey.</li>
-        <li>Top bar: <b>⌨ Keys · 🎤 Voice · Aa Tone</b>. Tap <b>Aa</b> to cycle the writing tone (Formal → Professional → Friendly → Casual → …).</li>
-      </ol>
-      <p class="note">Tip: open the app's <b>Settings</b> screen to set your AI URL/key, pick a default tone, and manage your custom dictionary.</p>
-    </div>
-
-    <footer>Shrey Keyboard • internal build<br/>Having trouble? Re-open this page and tap Download again.</footer>
   </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow reveal r1">Private beta &middot; Android 8.0+</p>
+        <h1 id="hero-h" class="reveal r1">A keyboard you can talk&nbsp;to.</h1>
+        <p class="lede reveal r2">Shre Keyboard turns speech into clean, punctuated text in 50+ languages — recognized on your device first, polished by AI — and it doesn&rsquo;t collect a word you type.</p>
+        <div class="hero-ctas reveal r3">
+          <a class="btn btn-primary" href="https://github.com/RapidInfosoft/shre-keyboard-releases/releases/latest">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5"/><path d="M4 19h16"/></svg>
+            Download for Android
+          </a>
+          <span class="ios-pill"><span class="dot" aria-hidden="true"></span>iOS &mdash; TestFlight beta in preparation</span>
+        </div>
+        <p class="hero-meta reveal r4">Direct APK from GitHub Releases &middot; installs outside Google&nbsp;Play &middot; <a href="#install">install steps below</a></p>
+      </div>
+
+      <div class="kb-stage reveal r5">
+        <figure class="kb" role="img" aria-label="Stylized illustration of the Shre Keyboard: a toolbar with Keys, Voice, and Tone modes, a voice waveform, and rough speech being cleaned into punctuated text." style="margin:0">
+          <div class="kb-toolbar" aria-hidden="true">
+            <span class="kb-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2.5"/></svg>Keys</span>
+            <span class="kb-chip active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><rect x="9.2" y="3.5" width="5.6" height="10.5" rx="2.8"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v2.6"/></svg>Voice</span>
+            <span class="kb-chip">Aa&nbsp;Friendly</span>
+            <span class="kb-badge">On-device</span>
+          </div>
+          <div class="kb-wave" id="wave" aria-hidden="true">
+            <span style="--h:22;--i:0"></span><span style="--h:48;--i:1"></span><span style="--h:70;--i:2"></span><span style="--h:38;--i:3"></span><span style="--h:88;--i:4"></span><span style="--h:56;--i:5"></span><span style="--h:30;--i:6"></span><span style="--h:76;--i:7"></span><span style="--h:95;--i:8"></span><span style="--h:52;--i:9"></span><span style="--h:26;--i:10"></span><span style="--h:64;--i:11"></span><span style="--h:84;--i:12"></span><span style="--h:44;--i:13"></span><span style="--h:18;--i:14"></span><span style="--h:58;--i:15"></span><span style="--h:78;--i:16"></span><span style="--h:36;--i:17"></span><span style="--h:66;--i:18"></span><span style="--h:90;--i:19"></span><span style="--h:50;--i:20"></span><span style="--h:28;--i:21"></span><span style="--h:72;--i:22"></span><span style="--h:40;--i:23"></span><span style="--h:20;--i:24"></span>
+          </div>
+          <div class="kb-transcript" aria-hidden="true">
+            <p class="kb-raw">&ldquo;uh so i was thinking lets just do dinner at seven on friday&rdquo;</p>
+            <p class="kb-clean">So I was thinking — let&rsquo;s just do dinner at 7 on Friday.</p>
+          </div>
+          <div class="kb-keys" aria-hidden="true">
+            <div class="kb-row"><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div></div>
+            <div class="kb-row"><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div></div>
+            <div class="kb-row"><div class="kb-key wide"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key"></div><div class="kb-key wide"></div></div>
+            <div class="kb-row"><div class="kb-key wide"></div><div class="kb-key space"></div><div class="kb-key mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9.2" y="3.5" width="5.6" height="10.5" rx="2.8"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v2.6"/></svg></div></div>
+          </div>
+          <figcaption class="kb-caption">Stylized representation of the beta UI — not a screenshot.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRIVACY ============ -->
+  <section id="privacy" aria-labelledby="privacy-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2 id="privacy-h">A keyboard sees everything you type.<br>This one is built to forget.</h2>
+        <p class="sub">Trust is the whole product in a keyboard. Here is exactly what Shre Keyboard does with your data — every statement below comes straight from the privacy policy.</p>
+      </div>
+      <div class="privacy-grid">
+        <ul class="fact-list reveal">
+          <li class="fact">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.2c0 4.6 3.2 8 7.5 9.8 4.3-1.8 7.5-5.2 7.5-9.8V6L12 3Z"/><path d="m9 12 2.2 2.2L15.4 10"/></svg>
+            <div><b>No keystroke collection.</b> <span>The app does not collect, store, or share the text you type — and runs no usage analytics or telemetry.</span></div>
+          </li>
+          <li class="fact">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m6 6 12 12"/></svg>
+            <div><b>No third-party trackers.</b> <span>Zero third-party analytics, advertising, or tracking SDKs. There is nothing in the app watching you for someone else.</span></div>
+          </li>
+          <li class="fact">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9.2" y="3.5" width="5.6" height="10.5" rx="2.8"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v2.6M8.5 20.6h7"/></svg>
+            <div><b>The microphone is opt-in.</b> <span>Mic permission exists only for voice typing. Decline it and the keyboard still works — audio is not recorded or stored.</span></div>
+          </li>
+          <li class="fact">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2.5"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/></svg>
+            <div><b>Encrypted in transit.</b> <span>When AI features do reach Nirlab servers, the connection is TLS-encrypted and no personally identifiable information is sent.</span></div>
+          </li>
+          <li class="fact">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4.5v7l4.5 2.5"/><circle cx="12" cy="12" r="8.5"/></svg>
+            <div><b>Works offline.</b> <span>On-device recognition keeps typing and dictation available with no connection at all. Your personal vocabulary is learned on-device and stays there.</span></div>
+          </li>
+        </ul>
+        <div class="policy-card reveal">
+          <h3>Read it yourself</h3>
+          <p>The full privacy policy is one short page in plain English — no lawyer required. It is the document the claims on this page are held to.</p>
+          <a class="btn btn-ghost" href="https://nirlabinc.github.io/shre-keyboard/privacy-policy.html">Read the privacy policy</a>
+          <p style="margin-top:1.1rem">Questions about data handling? Write to <a href="mailto:info@rapidinfosoft.com">info@rapidinfosoft.com</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section id="features" aria-labelledby="features-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2 id="features-h">More than dictation.</h2>
+        <p class="sub">Voice is the front door. Behind it, the keyboard writes, rewrites, translates, and talks to your AI agents — from any app on the phone.</p>
+      </div>
+      <div class="feat-grid">
+        <article class="feat featured reveal">
+          <div>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><rect x="9.2" y="3.5" width="5.6" height="10.5" rx="2.8"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v2.6M8.5 20.6h7"/></svg>
+            <h3>Voice-to-text that reads back like writing</h3>
+            <p>Speak naturally — with the ums, restarts, and run-ons. AI cleanup adds punctuation, casing, and structure, so what lands in the text field is the sentence you meant, not a raw transcript. Across 50+ languages.</p>
+          </div>
+          <div class="lang-cloud" aria-label="A sample of supported languages">
+            <span>English</span><span>Español</span><span>हिन्दी</span><span>ગુજરાતી</span><span>Français</span><span>Deutsch</span><span>Português</span><span>日本語</span><span>한국어</span><span>العربية</span><span>中文</span><span>+ more</span>
+          </div>
+        </article>
+        <article class="feat reveal">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19 15.5 8.5m0 0 2.8-2.8a1.7 1.7 0 0 1 2.4 2.4L17.9 11m-2.4-2.5 2.4 2.5M8 5l.7 1.8L10.5 7.5l-1.8.7L8 10l-.7-1.8L5.5 7.5l1.8-.7L8 5Z"/></svg>
+          <h3>Smart Compose</h3>
+          <p>Context-aware drafting and replies. It sees the conversation you're in and writes the next message the way you would.</p>
+        </article>
+        <article class="feat reveal">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H12l-4.5 4v-4h-1A2.5 2.5 0 0 1 4 13.5v-7Z"/></svg>
+          <h3>Ask Shre</h3>
+          <p>Talk to any Shre AI agent without leaving the app you're in. Ask a question in a text field, insert the answer.</p>
+        </article>
+        <article class="feat reveal">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.3 3.9 5.2 3.9 8.5s-1.3 6.2-3.9 8.5c-2.6-2.3-3.9-5.2-3.9-8.5s1.3-6.2 3.9-8.5Z"/></svg>
+          <h3>Auto-translate</h3>
+          <p>Speak in any language; insert in English — or any target you choose. Dictate in Hindi, send in English, mid-conversation.</p>
+        </article>
+        <article class="feat reveal">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 5.5A2 2 0 0 1 6.5 3.5H19.5v15H6.5a2 2 0 0 0-2 2v-15Z"/><path d="M4.5 18.5a2 2 0 0 1 2-2H19.5"/><path d="M9.5 8.5h6"/></svg>
+          <h3>Personal vocabulary</h3>
+          <p>Learns your names, brands, and jargon on-device. Private, offline, and never uploaded — it's your dictionary, on your phone.</p>
+        </article>
+        <article class="feat reveal">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 7.5h10M18 7.5h2M4 16.5h2M10 16.5h10"/><circle cx="16" cy="7.5" r="2.2"/><circle cx="8" cy="16.5" r="2.2"/></svg>
+          <h3>Tone control</h3>
+          <p>One tap cycles the writing voice — Formal, Professional, Friendly, Casual. Same words in, different register out.</p>
+        </article>
+        <article class="feat reveal">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.9-3M4 13a8 8 0 0 0 14.9 3"/><path d="M5 4v4h4M19 20v-4h-4"/></svg>
+          <h3>Cross-device sync</h3>
+          <p>Sign in with an email and password and your settings follow you across devices. No social login required.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VOICE ENGINE ============ -->
+  <section id="voice" class="band" aria-labelledby="voice-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2 id="voice-h">One tap. Three engines.</h2>
+        <p class="sub">Every dictation takes the fastest engine available and falls back gracefully — speed when you have it, coverage when you need it, and on-device recognition when you have nothing at all.</p>
+      </div>
+      <div class="tiers">
+        <article class="tier reveal">
+          <h3>On-device</h3>
+          <p class="lat">~0<small>ms</small></p>
+          <p>Apple Speech and Google speech recognition, running on the phone itself. Instant partial results as you speak.</p>
+          <ul>
+            <li>50+ languages</li>
+            <li>Free, works offline</li>
+            <li>The default — most dictation never leaves this tier</li>
+          </ul>
+        </article>
+        <article class="tier reveal">
+          <h3>GPU-accelerated</h3>
+          <p class="lat">~50<small>ms</small></p>
+          <p>NVIDIA Riva running on Nirlab's own self-hosted GPU infrastructure — not a rented black box.</p>
+          <ul>
+            <li>11 languages natively</li>
+            <li>Server-grade accuracy at conversational speed</li>
+          </ul>
+        </article>
+        <article class="tier reveal">
+          <h3>Cloud fallback</h3>
+          <p class="lat">~300<small>ms</small></p>
+          <p>Whisper in the cloud, for the long tail — rare languages and hard audio the first two tiers can't cover.</p>
+          <ul>
+            <li>99+ languages</li>
+            <li>Used only when the faster tiers can't serve the request</li>
+          </ul>
+        </article>
+      </div>
+      <p class="band-note reveal"><b>Why a cascade?</b> Most voice keyboards pick one engine and make you live with its trade-offs. Shre Keyboard routes each request — so everyday dictation is instant and free, and the expensive engines only run when they actually earn their latency.</p>
+    </div>
+  </section>
+
+  <!-- ============ INSTALL ============ -->
+  <section id="install" aria-labelledby="install-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2 id="install-h">On your phone in about two minutes.</h2>
+        <p class="sub">Shre Keyboard is in private beta, so it installs as a direct APK from GitHub — no Play Store listing yet. Four steps, on the phone you're installing to.</p>
+      </div>
+      <ol class="steps">
+        <li class="step reveal">
+          <div>
+            <h3>Download the APK</h3>
+            <p>Open this page on your Android phone (8.0 or newer) and tap the button. It goes to this project's GitHub Releases — the only official source for the APK.</p>
+            <a class="btn btn-primary" href="https://github.com/RapidInfosoft/shre-keyboard-releases/releases/latest">Download for Android</a>
+          </div>
+        </li>
+        <li class="step reveal">
+          <div>
+            <h3>Approve the install</h3>
+            <p>Android will ask once to let your browser <b>install unknown apps</b> — the standard prompt for any app installed outside Google Play. Allow it, then tap <b>Install</b>, and open the app once to finish setup.</p>
+          </div>
+        </li>
+        <li class="step reveal">
+          <div>
+            <h3>Enable the keyboard</h3>
+            <p>The path differs by manufacturer — these are the two most common:</p>
+            <div class="device-cards">
+              <div class="device-card">
+                <h4>Stock Android — Pixel &amp; most others</h4>
+                <div class="crumbs"><span>Settings</span><i>›</i><span>System</span><i>›</i><span>Languages &amp; input</span><i>›</i><span>On-screen keyboard</span></div>
+                <p>Open <b>Manage on-screen keyboards</b> and switch on <b>Shre Keyboard</b>.</p>
+              </div>
+              <div class="device-card">
+                <h4>Samsung Galaxy</h4>
+                <div class="crumbs"><span>Settings</span><i>›</i><span>General management</span><i>›</i><span>Keyboard list and default</span></div>
+                <p>Switch on <b>Shre Keyboard</b> — and set it as the default keyboard from the same screen.</p>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="step reveal">
+          <div>
+            <h3>Switch and speak</h3>
+            <p>Tap any text field, use the keyboard-switcher icon (or long-press the globe key) and pick <b>Shre Keyboard</b>. Tap the mic and talk — the toolbar switches between <b>Keys</b>, <b>Voice</b>, and <b>Tone</b>.</p>
+          </div>
+        </li>
+      </ol>
+      <div class="ios-card reveal">
+        <h3><span class="dot" aria-hidden="true"></span>Using an iPhone?</h3>
+        <p>Shre Keyboard for iOS is built and in internal testing. A public TestFlight beta is being prepared — there's no public download link yet, and we won't put a dead button here. Write to <a href="mailto:info@rapidinfosoft.com">info@rapidinfosoft.com</a> if you want to know when it opens.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2 id="faq-h">Fair questions.</h2>
+      </div>
+      <div class="faq reveal">
+        <details>
+          <summary>Why isn't it on Google Play?</summary>
+          <p class="a">Shre Keyboard is in private beta. While it is, we ship the APK directly from GitHub Releases so new builds reach testers the moment they're published, without store review lag.</p>
+        </details>
+        <details>
+          <summary>Is installing an APK outside the Play Store safe?</summary>
+          <p class="a">Sideloading is only as safe as the source. The official APK is published in exactly one place — this repository's GitHub Releases, by Nirlab Inc. Download it only from there. The "install unknown apps" prompt you'll see is Android's normal check for any app installed outside Google Play, not a warning specific to this app.</p>
+        </details>
+        <details>
+          <summary>Does it work offline?</summary>
+          <p class="a">Yes. Typing and on-device dictation work with no connection, and your personal vocabulary lives on the phone. AI cleanup, Smart Compose, translation, and Ask Shre need a network connection.</p>
+        </details>
+        <details>
+          <summary>What happens to my voice audio?</summary>
+          <p class="a">Voice typing starts with on-device recognition, and audio is not recorded or stored. The <a href="https://nirlabinc.github.io/shre-keyboard/privacy-policy.html">privacy policy</a> is the authoritative statement on data handling — it's short, and worth the two minutes.</p>
+        </details>
+        <details>
+          <summary>Which devices does it support?</summary>
+          <p class="a">Any Android phone or tablet on Android 8.0 or newer. On iOS, the keyboard is in internal testing ahead of a TestFlight beta.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="fin" aria-labelledby="fin-h">
+    <div class="wrap">
+      <h2 id="fin-h" class="reveal">Your thumbs deserve the day off.</h2>
+      <div class="hero-ctas reveal">
+        <a class="btn btn-primary" href="https://github.com/RapidInfosoft/shre-keyboard-releases/releases/latest">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5"/><path d="M4 19h16"/></svg>
+          Download for Android
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/RapidInfosoft/shre-keyboard-releases/releases">All releases</a>
+      </div>
+      <p class="hero-meta reveal">Android 8.0+ &middot; private beta &middot; proprietary software by Nirlab Inc.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-row">
+      <span class="brand"><span class="brand-mark" aria-hidden="true">S</span>Shre&nbsp;Keyboard</span>
+      <nav class="foot-links" aria-label="Footer">
+        <a href="https://nirlabinc.github.io/shre-keyboard/privacy-policy.html">Privacy policy</a>
+        <a href="https://github.com/RapidInfosoft/shre-keyboard-releases/releases">Releases</a>
+        <a href="mailto:info@rapidinfosoft.com">Contact</a>
+      </nav>
+    </div>
+    <p class="foot-legal">&copy; 2026 Nirlab Inc. All rights reserved. Shre Keyboard is proprietary software; source code lives in a private repository — this site and repository exist for distribution.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var d = document.documentElement;
+
+  // Theme toggle (persisted; respects OS preference until user chooses)
+  var btn = document.getElementById('themeToggle');
+  function currentTheme() {
+    var t = d.getAttribute('data-theme');
+    if (t) return t;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  btn.addEventListener('click', function () {
+    var next = currentTheme() === 'dark' ? 'light' : 'dark';
+    d.setAttribute('data-theme', next);
+    try { localStorage.setItem('shre-theme', next); } catch (e) {}
+  });
+
+  // Header border on scroll
+  var header = document.querySelector('.site-header');
+  var onScroll = function () { header.classList.toggle('scrolled', window.scrollY > 8); };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Scroll reveals — once, per element
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    reveals.forEach(function (el) { io.observe(el); });
+  } else {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  // Waveform: animate only while visible, and never under reduced motion
+  var wave = document.getElementById('wave');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (wave && 'IntersectionObserver' in window && !reduced.matches) {
+    var wio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { wave.classList.toggle('playing', e.isIntersecting); });
+    }, { threshold: 0.2 });
+    wio.observe(wave);
+  }
+})();
+</script>
 </body>
 </html>
